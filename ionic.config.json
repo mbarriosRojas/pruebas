@@ -1,0 +1,8 @@
+{
+  "name": "connecta",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular",
+  "id": "6ed15002"
+}

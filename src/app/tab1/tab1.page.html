@@ -1,0 +1,31 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Table scroll infinito</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row class="text-center">
+      <ion-col>Id</ion-col>
+      <ion-col>Img</ion-col>
+      <ion-col>Nombre</ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-grid>
+    <ion-row  *ngFor="let item of items; let index">
+      <ion-col>{{ item.id }}</ion-col>
+      <ion-col>
+        <ion-item style="background: none;">
+          <ion-avatar slot="start" style="background: none;">
+            <img [src]="item.foto" alt="avatar" />
+          </ion-avatar>
+        </ion-item>
+      </ion-col>
+      <ion-col>{{ item.nombre }}</ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>
