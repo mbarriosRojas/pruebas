@@ -1,0 +1,45 @@
+export interface Prospecto{
+    Id?: string,
+    Apellido_Materno__c: string,
+    Capacidad__c: number,
+    FirstName: string,
+    Email:string,
+    LastName: string,
+    Motivo_no_contacto__c:string,
+    Motivo__c:string,
+    Parque_Cotizacion__c:string,
+    Parque__c:string,
+    Producto__c:string,
+    Prospecto_Contactado__c:string,
+    Respuesta_Contacto__c:string,
+    Rut__c:string,
+    Status:string,
+    Segundo_Apellido__c:string,
+    Phone:string,
+    MiddleName:string,
+    Tipo_de_Cinerario__c:string,
+    attributes?:{type?:string,url?:string},
+
+    Necesidad__c?: string,
+    LeadSource?: string,
+    Grupos_Fuente__c?:string,
+    Descripcion_Fuente__c?:string,
+    Rut_Referidor__c?:string,
+    Nombre_Referidor__c?:string,
+    Comuna1_Completa__c?:string,
+    Comuna2_Completa__c?:string,
+    Birthday__c?:string,
+    Profesion__c?:string,
+    Grupo_Familiar__c?:number,
+    Tomador_de_decision__c?:boolean,
+    Posible_Pie__c?:number,
+    Forma_de_Pago__c?:string,
+    Cuota__c?:number,
+    Tiene_sepultura__c?:boolean,
+    Donde__c?:string
+  }
+
+  export interface optionSelect{
+    value:string,
+    label:string
+  }

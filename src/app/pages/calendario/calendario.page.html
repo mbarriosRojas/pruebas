@@ -1,0 +1,243 @@
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-buttons slot="start" class="boton-volver">
+        <ion-back-button
+          default-href="#"
+          (click)="volver()"
+          text="Volver"
+        ></ion-back-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+  <div class="ion-padding">
+    <ion-item-divider class="titulo-divider">
+      <ion-text class="titulo-seccion">
+        <h3>Agenda</h3>
+      </ion-text>
+    </ion-item-divider>
+
+    <ion-row>
+      <ion-col>
+        <ion-list>
+          <ion-item>
+            <ion-select
+              label="Vista"
+              label-placement="stacked"
+              (ionChange)="changeMode($event)"
+              [(ngModel)]="calendar.mode"
+            >
+              <ion-select-option value="month">Mes</ion-select-option>
+              <ion-select-option value="week">Semana</ion-select-option>
+              <ion-select-option value="day">Día</ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+      <ion-col>
+        <ion-button expand="full" class="boton-relleno" id="open-modal"
+          >Nueva cita</ion-button
+        >
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-toolbar>
+          <ion-title slot="start">{{ viewTitle }}</ion-title>
+          <ion-buttons slot="end">
+            <ion-button [disabled]="isToday" (click)="today()">Hoy</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ng-template
+          #dayviewNormalEventTemplate
+          let-displayEvent="displayEvent"
+        >
+          <div class="calendar-event-inner">
+            <b>{{displayEvent.event.nombre}}</b>: De
+            {{displayEvent.event.startTime.toLocaleTimeString('es-CL')}} hasta
+            {{displayEvent.event.endTime.toLocaleTimeString('es-CL')}}
+          </div>
+        </ng-template>
+
+        <ng-template
+          #monthviewEventDetailTemplate
+          let-showEventDetail="showEventDetail"
+          let-selectedDate="selectedDate"
+          let-noEventsLabel="noEventsLabel"
+        >
+          <table
+            class="table table-bordered"
+            has-bouncing="false"
+            *ngIf="showEventDetail"
+            overflow-scroll="false"
+            style="margin-top: 20px"
+          >
+            <tbody>
+              <tr
+                *ngFor="let event of selectedDate?.events"
+                (click)="onEventSelected(event)"
+              >
+                <td
+                  *ngIf="!event.allDay"
+                  class="monthview-eventdetail-timecolumn"
+                >
+                  {{event.nombre}}
+                </td>
+                <td
+                  *ngIf="!event.allDay"
+                  class="monthview-eventdetail-timecolumn"
+                >
+                  {{event.title}}
+                </td>
+                <td
+                  *ngIf="!event.allDay"
+                  class="monthview-eventdetail-timecolumn"
+                >
+                  {{event.startTime|date: 'HH:mm'}} - {{event.endTime|date:
+                  'HH:mm'}}
+                </td>
+                <td
+                  *ngIf="event.allDay"
+                  class="monthview-eventdetail-timecolumn"
+                >
+                  {{event.nombre}}
+                </td>
+                <td
+                  *ngIf="event.allDay"
+                  class="monthview-eventdetail-timecolumn"
+                >
+                  {{event.title}}
+                </td>
+                <td
+                  *ngIf="event.allDay"
+                  class="monthview-eventdetail-timecolumn"
+                >
+                  Todo el día
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </ng-template>
+
+        <calendar
+          [noEventsLabel]="calendar.noEventsLabel"
+          [monthviewEventDetailTemplate]="monthviewEventDetailTemplate"
+          [dayviewNormalEventTemplate]="dayviewNormalEventTemplate"
+          [eventSource]="eventSource"
+          [queryMode]="calendar.queryMode"
+          [calendarMode]="calendar.mode"
+          [timeInterval]="60"
+          [currentDate]="calendar.currentDate"
+          [step]="calendar.step"
+          [preserveScrollPosition]="calendar.preserveScrollPosition"
+          [startHour]="calendar.startHour"
+          (onCurrentDateChanged)="onCurrentDateChanged($event)"
+          (onEventSelected)="onEventSelected($event)"
+          (onTitleChanged)="onViewTitleChanged($event)"
+          (onTimeSelected)="onTimeSelected($event)"
+          (onDayHeaderSelected)="onDayHeaderSelected($event)"
+        >
+        </calendar>
+      </ion-col>
+    </ion-row>
+    <ion-modal
+      #modal
+      trigger="open-modal"
+      [initialBreakpoint]="0.25"
+      [breakpoints]="[0, 0.25, 0.5, 0.75]"
+    >
+      <ng-template>
+        <ion-content>
+          <div class="ion-padding">
+            <ion-row>
+              <ion-col>
+                <ion-item>
+                  <ion-select
+                    label="Tipo de nuevo evento"
+                    label-placement="stacked"
+                    [(ngModel)]="tipoNuevoEvento"
+                    (ionChange)="verificarTipo($event)"
+                  >
+                    <ion-select-option value="nuevo"
+                      >Nuevo prospecto</ion-select-option
+                    >
+                    <ion-select-option value="existente"
+                      >Mis prospecto</ion-select-option
+                    >
+                  </ion-select>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+          </div>
+          <ion-row>
+            <ion-col>
+              <div *ngIf="esNuevo">
+                <ion-button
+                  expand="full"
+                  class="boton-relleno"
+                  (click)="modal.dismiss();crearProspecto()"
+                  >Ir a crear prospecto</ion-button
+                >
+              </div>
+              <div *ngIf="esExistente">
+                <div class="ion-padding">
+                  <ion-item-divider class="titulo-divider">
+                    <ion-grid>
+                      <ion-row>
+                        <ion-col size="8">
+                          <ion-text class="titulo-seccion">
+                            <h3>Mis prospectos</h3>
+                          </ion-text>
+                        </ion-col>
+                        
+                      </ion-row>
+                    </ion-grid>
+                  </ion-item-divider>
+                  <ion-row *ngIf="rows">
+                    <ion-col>
+                      <!--<ion-input label="Filtrar" class="input-search" labelPlacement="stacked" placeholder="Filtar" (keyup)="updateFilter($event)"></ion-input>-->
+                      <ion-searchbar
+                        (keyup)="updateFilter($event)"
+                        animated="true"
+                        placeholder="Buscar por nombre"
+                      ></ion-searchbar>
+                    </ion-col>
+                  </ion-row>
+                  <ion-row *ngIf="rows">
+                    <ion-col>
+                      <ngx-datatable
+                        #table
+                        [rows]="rows"
+                        [columns]="columns"
+                        class="bootstrap"
+                        [loadingIndicator]="loadingIndicator"
+                        [summaryRow]="false"
+                        [footerHeight]="80"
+                        [limit]="5"
+                        rowHeight="auto"
+                        [reorderable]="reorderable"
+                        [selected]="selected"
+                        [selectionType]="SelectionType.single"
+                        (activate)="onActivate($event)"
+                        (select)="onSelect($event)"
+                        [scrollbarH]="true"
+                        
+                        [messages]="mensajes"
+                      >
+                      </ngx-datatable>
+                    </ion-col>
+                  </ion-row>
+                </div>
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-content>
+      </ng-template>
+    </ion-modal>
+  </div>
+</ion-content>

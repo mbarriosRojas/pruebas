@@ -1,0 +1,72 @@
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-buttons slot="start" class="boton-volver">
+        <ion-back-button default-href="#" (click)="volver()" text="Volver"></ion-back-button>
+      </ion-buttons>
+      
+    </ion-toolbar>
+  </ion-header>
+  <div class="ion-padding">
+    <ion-item-divider class="titulo-divider">
+      <ion-text class="titulo-seccion">
+        <h3>Datos evento</h3>
+      </ion-text>
+    </ion-item-divider>
+
+    <ion-row>
+      <ion-col>
+        <ion-list>
+          <ion-item *ngIf="datosCargados">
+            <ion-input label="Prosepcto" labelPlacement="stacked" placeholder="Prospecto" readonly="true" [(ngModel)]="datosCita.Who.Name"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-input label="Asunto" labelPlacement="stacked" placeholder="Asunto" [(ngModel)]="datosEvento.Subject"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-select label="Tipo" label-placement="stacked" [(ngModel)]="datosEvento.Type">
+              
+              <ion-select-option value="{{opt.value}}"  *ngFor="let opt of optsTipo">{{opt.label}}</ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <ion-item>
+            <ion-input label="Ubicación" labelPlacement="stacked" placeholder="Ubicación" [(ngModel)]="datosEvento.Location"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-input label="Link reunión" labelPlacement="stacked" placeholder="Link reunión" [(ngModel)]="datosEvento.Link_Reunion__c"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-select label="Estado de la entrevista" label-placement="stacked" [(ngModel)]="datosEvento.Estado_de_la_Entrevista__c">
+              
+              <ion-select-option value="{{opt.value}}"  *ngFor="let opt of optsEstado">{{opt.label}}</ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <ion-item>
+            <ion-textarea label="Descripción" labelPlacement="stacked" placeholder="Descripción" [(ngModel)]="datosEvento.Description"></ion-textarea>
+          </ion-item>
+
+          <ion-item *ngIf="datosCargados">
+            <ion-datetime locale="es-ES" label="Inicio" label-placement="stacked" [(ngModel)]="datosEvento.StartDateTime" [showDefaultButtons]="false" value="2023-12-11T10:00:00">
+              <span slot="title">Inicio</span>
+              <span slot="time-label">Hora</span>
+            </ion-datetime>
+          </ion-item>      
+          
+        </ion-list>
+        
+      </ion-col>
+    </ion-row>
+    
+    <ion-row>
+      <ion-col>
+        <ion-button expand="full" class="boton-relleno" (click)="guardar()">Modificar</ion-button>
+      </ion-col>
+    </ion-row>
+
+  </div>
+</ion-content>

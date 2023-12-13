@@ -31,7 +31,13 @@
                 "output": "./svg"
               }
             ],
-            "styles": ["src/theme/variables.scss", "src/global.scss"],
+            "styles": ["src/theme/variables.scss", "src/global.scss",
+            "./node_modules/@swimlane/ngx-datatable/index.css",
+            "./node_modules/@swimlane/ngx-datatable/themes/material.css",
+            "./node_modules/@swimlane/ngx-datatable/assets/icons.css",
+            "src/theme/variables.scss",
+            "src/global.scss"
+                      ],
             "scripts": []
           },
           "configurations": {
@@ -136,7 +142,8 @@
   "cli": {
     "schematicCollections": [
       "@ionic/angular-toolkit"
-    ]
+    ],
+    "analytics": false
   },
   "schematics": {
     "@ionic/angular-toolkit:component": {

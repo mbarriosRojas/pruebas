@@ -1,0 +1,541 @@
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-buttons slot="start" class="boton-volver">
+        <ion-back-button
+          default-href="#"
+          (click)="volver()"
+          text="Volver"
+        ></ion-back-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+  <div class="ion-padding">
+    <ion-row>
+      <ion-col>
+        <ion-segment value="all">
+          <ion-segment-button value="all" (click)="segmentoActivo = true">
+            <ion-label>Información</ion-label>
+          </ion-segment-button>
+          <ion-segment-button
+            value="favorites"
+            (click)="segmentoActivo = false"
+          >
+            <ion-label>Citas</ion-label>
+          </ion-segment-button>
+        </ion-segment>
+      </ion-col>
+    </ion-row>
+    <div [hidden]="!segmentoActivo">
+      
+      <ion-accordion-group [value]="['first']">
+        <ion-accordion value="first">
+          <ion-item-divider class="titulo-divider"  slot="header">
+            <ion-text class="titulo-seccion">
+              <h3>Datos personales</h3>
+            </ion-text>
+          </ion-item-divider>
+          <ion-row slot="content">
+            <ion-col>
+              <ion-list>
+                <ion-item>
+                  <ion-input
+                    label="Primer Nombre"
+                    labelPlacement="stacked"
+                    placeholder="Primer Nombre"
+                    [(ngModel)]="datosProspecto.FirstName"
+                  ></ion-input>
+                </ion-item>
+    
+                <ion-item>
+                  <ion-input
+                    label="Segundo Nombre"
+                    labelPlacement="stacked"
+                    placeholder="Segundo Nombre"
+                    [(ngModel)]="datosProspecto.MiddleName"
+                  ></ion-input>
+                </ion-item>
+    
+                <ion-item>
+                  <ion-input
+                    label="Primer Apellido"
+                    labelPlacement="stacked"
+                    placeholder="Primer Apellido"
+                    [(ngModel)]="datosProspecto.LastName"
+                  ></ion-input>
+                </ion-item>
+    
+                <ion-item>
+                  <ion-input
+                    label="Apellido Materno"
+                    labelPlacement="stacked"
+                    placeholder="Apellido Materno"
+                    [(ngModel)]="datosProspecto.Apellido_Materno__c"
+                  ></ion-input>
+                </ion-item>
+    
+                <ion-item>
+                  <ion-input
+                    label="Teléfono"
+                    labelPlacement="stacked"
+                    placeholder="Teléfono"
+                    [(ngModel)]="datosProspecto.Phone"
+                  ></ion-input>
+                </ion-item>
+    
+                <ion-item>
+                  <ion-input
+                    label="Email"
+                    labelPlacement="stacked"
+                    placeholder="Email"
+                    type="text"
+                    [(ngModel)]="datosProspecto.Email"
+                  ></ion-input>
+                </ion-item>
+    
+                <ion-item>
+                  <ion-input
+                    label="Rut"
+                    labelPlacement="stacked"
+                    placeholder="Rut"
+                    [(ngModel)]="datosProspecto.Rut__c"
+                  ></ion-input>
+                </ion-item>
+                <ion-item>
+                  <ion-select
+                    label="Profesión"
+                    label-placement="stacked"
+                    [(ngModel)]="datosProspecto.Profesion__c"
+                  >
+                    
+                    <ion-select-option
+                      value="{{opt.value}}"
+                      *ngFor="let opt of optsProfesion"
+                      >{{opt.label}}</ion-select-option
+                    >
+                  </ion-select>
+                </ion-item>
+                <ion-item *ngIf="cargaCompleta">
+                  <ion-datetime presentation="date" [preferWheel]="true" [(ngModel)]="auxFNacimiento" value="2000-01-01T10:00:00"></ion-datetime>
+                </ion-item>
+              </ion-list>
+            </ion-col>
+          </ion-row>
+        </ion-accordion>
+        <ion-accordion value="second">
+          <ion-item-divider class="titulo-divider" slot="header">
+            <ion-text class="titulo-seccion">
+              <h3>Cotización simple</h3>
+            </ion-text>
+          </ion-item-divider>
+          <ion-row slot="content">
+            <ion-col>
+              <ion-list>
+                <ion-item>
+                  <ion-select
+                    label="Producto"
+                    label-placement="stacked"
+                    [(ngModel)]="datosProspecto.Producto__c"
+                  >
+                    <ion-select-option value="">Ninguno</ion-select-option>
+                    <ion-select-option
+                      value="{{opt.value}}"
+                      *ngFor="let opt of optsProductos"
+                      >{{opt.label}}</ion-select-option
+                    >
+                  </ion-select>
+                </ion-item>
+    
+                <ion-item>
+                  <ion-select
+                    label="Parque"
+                    label-placement="stacked"
+                    [(ngModel)]="datosProspecto.Parque__c"
+                  >
+                    <ion-select-option value="">Ninguno</ion-select-option>
+                    <ion-select-option
+                      value="{{opt.value}}"
+                      *ngFor="let opt of optsParque"
+                      >{{opt.label}}</ion-select-option
+                    >
+                  </ion-select>
+                </ion-item>
+    
+                <ion-item>
+                  <ion-select
+                    label="Tipo de cinerario"
+                    label-placement="stacked"
+                    [(ngModel)]="datosProspecto.Tipo_de_Cinerario__c"
+                  >
+                    <ion-select-option value="">Ninguno</ion-select-option>
+                    <ion-select-option
+                      value="{{opt.value}}"
+                      *ngFor="let opt of optsTipoCinerario"
+                      >{{opt.label}}</ion-select-option
+                    >
+                  </ion-select>
+                </ion-item>
+    
+                <ion-item>
+                  <ion-input
+                    label="Capacidad"
+                    labelPlacement="stacked"
+                    placeholder="Capacidad"
+                    type="number"
+                    [(ngModel)]="datosProspecto.Capacidad__c"
+                  ></ion-input>
+                </ion-item>
+              </ion-list>
+            </ion-col>
+          </ion-row>
+        </ion-accordion>
+        <ion-accordion value="third">
+          <ion-item-divider class="titulo-divider" slot="header">
+            <ion-text class="titulo-seccion">
+              <h3>Contacto</h3>
+            </ion-text>
+          </ion-item-divider>
+          <ion-row slot="content">
+            <ion-col>
+              <ion-list>
+                <ion-item>
+                  <ion-select
+                    label="Prospecto Contactado"
+                    label-placement="stacked"
+                    [(ngModel)]="datosProspecto.Prospecto_Contactado__c"
+                    (ionChange)="dependenciaNoContacto($event)"
+                  >
+                    <ion-select-option value="">Ninguno</ion-select-option>
+                    <ion-select-option
+                      value="{{opt.value}}"
+                      *ngFor="let opt of optsProspectoContactado"
+                      >{{opt.label}}</ion-select-option
+                    >
+                  </ion-select>
+                </ion-item>
+    
+                <ion-item>
+                  <ion-select
+                    label="Motivo no contacto"
+                    label-placement="stacked"
+                    [(ngModel)]="datosProspecto.Motivo_no_contacto__c"
+                  >
+                    <ion-select-option value="">Ninguno</ion-select-option>
+                    <ion-select-option
+                      value="{{opt.value}}"
+                      *ngFor="let opt of optsMotivoNoContactado"
+                      >{{opt.label}}</ion-select-option
+                    >
+                  </ion-select>
+                </ion-item>
+    
+                <ion-item>
+                  <ion-select
+                    label="Respuesta contacto"
+                    label-placement="stacked"
+                    [(ngModel)]="datosProspecto.Respuesta_Contacto__c"
+                    (ionChange)="dependenciaRespuesta($event)"
+                  >
+                    <ion-select-option value="">Ninguno</ion-select-option>
+                    <ion-select-option
+                      value="{{opt.value}}"
+                      *ngFor="let opt of optsRespuestaContacto"
+                      >{{opt.label}}</ion-select-option
+                    >
+                  </ion-select>
+                </ion-item>
+    
+                <ion-item>
+                  <ion-select
+                    label="Motivo"
+                    label-placement="stacked"
+                    [(ngModel)]="datosProspecto.Motivo__c"
+                  >
+                    <ion-select-option value="">Ninguno</ion-select-option>
+                    <ion-select-option
+                      value="{{opt.value}}"
+                      *ngFor="let opt of optsMotivo"
+                      >{{opt.label}}</ion-select-option
+                    >
+                  </ion-select>
+                </ion-item>
+    
+                
+              </ion-list>
+            </ion-col>
+          </ion-row>
+        </ion-accordion>
+
+        <ion-accordion value="four">
+          <ion-item-divider class="titulo-divider" slot="header">
+            <ion-text class="titulo-seccion">
+              <h3>Información de prospecto</h3>
+            </ion-text>
+          </ion-item-divider>
+          <ion-row slot="content">
+            <ion-col>
+              <ion-list>
+                <ion-item>
+                  <ion-select
+                    label="Estado"
+                    label-placement="stacked"
+                    [(ngModel)]="datosProspecto.Status"
+                  >
+                    <ion-select-option
+                      value="{{opt.value}}"
+                      *ngFor="let opt of optsStatus"
+                      >{{opt.label}}</ion-select-option
+                    >
+                  </ion-select>
+                </ion-item>
+                <ion-item>
+                  <ion-select
+                    label="Necesidad"
+                    label-placement="stacked"
+                    [(ngModel)]="datosProspecto.Necesidad__c"
+                  >
+                    <ion-select-option
+                      value="{{opt.value}}"
+                      *ngFor="let opt of optsNecesidad"
+                      >{{opt.label}}</ion-select-option
+                    >
+                  </ion-select>
+                </ion-item>
+                <ion-item>
+                  <ion-select
+                    label="Origen del prospecto"
+                    label-placement="stacked"
+                    [(ngModel)]="datosProspecto.LeadSource"
+                  >
+                    <ion-select-option
+                      value="{{opt.value}}"
+                      *ngFor="let opt of optsOrigen"
+                      >{{opt.label}}</ion-select-option
+                    >
+                  </ion-select>
+                </ion-item>
+                <ion-item>
+                  <ion-select
+                    label="Grupo Fuente"
+                    label-placement="stacked"
+                    [(ngModel)]="datosProspecto.Grupos_Fuente__c"
+                    (ionChange)="dependenciaCodigoFuente($event)"
+                  >
+                    <ion-select-option
+                      value="{{opt.value}}"
+                      *ngFor="let opt of optsGrupoFuente"
+                      >{{opt.label}}</ion-select-option
+                    >
+                  </ion-select>
+                </ion-item>
+                <ion-item>
+                  <ion-select
+                    label="Código Fuente"
+                    label-placement="stacked"
+                    [(ngModel)]="datosProspecto.Descripcion_Fuente__c"
+                    
+                  >
+                    
+                    <ion-select-option
+                      value="{{opt.value}}"
+                      *ngFor="let opt of optsCodigoFuente"
+                      >{{opt.label}}</ion-select-option
+                    >
+                  </ion-select>
+                </ion-item>
+                <ion-item>
+                  <ion-select
+                    label="Comuna 1"
+                    label-placement="stacked"
+                    [(ngModel)]="datosProspecto.Comuna1_Completa__c"
+                  >
+                    <ion-select-option
+                      value="{{opt.value}}"
+                      *ngFor="let opt of optsComu1"
+                      >{{opt.label}}</ion-select-option
+                    >
+                  </ion-select>
+                </ion-item>
+                <ion-item>
+                  <ion-select
+                    label="Comuna 2"
+                    label-placement="stacked"
+                    [(ngModel)]="datosProspecto.Comuna2_Completa__c"
+                  >
+                    <ion-select-option
+                      value="{{opt.value}}"
+                      *ngFor="let opt of optsComu2"
+                      >{{opt.label}}</ion-select-option
+                    >
+                  </ion-select>
+                </ion-item>
+                
+              </ion-list>
+            </ion-col>
+          </ion-row>
+        </ion-accordion>
+        <ion-accordion value="five">
+          <ion-item-divider class="titulo-divider" slot="header">
+            <ion-text class="titulo-seccion">
+              <h3>Información de interes</h3>
+            </ion-text>
+          </ion-item-divider>
+          <ion-row slot="content">
+            <ion-col>
+              <ion-list>
+                <ion-item>
+                  <ion-input
+                    label="Nombre Referidor"
+                    labelPlacement="stacked"
+                    placeholder="Nombre Referidor"
+                    
+                    [(ngModel)]="datosProspecto.Nombre_Referidor__c"
+                  ></ion-input>
+                </ion-item>
+                <ion-item>
+                  <ion-input
+                    label="Rut Referidor"
+                    labelPlacement="stacked"
+                    placeholder="Rut Referidor"
+                    
+                    [(ngModel)]="datosProspecto.Rut_Referidor__c"
+                  ></ion-input>
+                </ion-item>
+                <ion-item>
+                  <ion-input
+                    label="Grupo Familiar"
+                    labelPlacement="stacked"
+                    placeholder="Grupo Familiar"
+                    type="number"
+                    [(ngModel)]="datosProspecto.Grupo_Familiar__c"
+                  ></ion-input>
+                </ion-item>
+                <ion-item>
+                  <ion-select
+                    label="Tomador de decisión"
+                    label-placement="stacked"
+                    [(ngModel)]="auxTomadorDecision"
+                  >
+                    <ion-select-option
+                      value="true"
+                      >Si</ion-select-option
+                    >
+                    <ion-select-option
+                      value="false"
+                      >No</ion-select-option
+                    >
+                  </ion-select>
+                </ion-item>
+                <ion-item>
+                  <ion-input
+                    label="Posible Pie"
+                    labelPlacement="stacked"
+                    placeholder="Posible Pie"
+                    type="number"
+                    [(ngModel)]="datosProspecto.Posible_Pie__c"
+                  ></ion-input>
+                </ion-item>
+                <ion-item>
+                  <ion-input
+                    label="Forma de Pago"
+                    labelPlacement="stacked"
+                    placeholder="Forma de Pago"
+                    
+                    [(ngModel)]="datosProspecto.Forma_de_Pago__c"
+                  ></ion-input>
+                </ion-item>
+                <ion-item>
+                  <ion-input
+                    label="Cuota"
+                    labelPlacement="stacked"
+                    placeholder="Cuota"
+                    type="number"
+                    [(ngModel)]="datosProspecto.Cuota__c"
+                  ></ion-input>
+                </ion-item>
+                <ion-item>
+                  <ion-select
+                    label="¿Tiene sepultura?"
+                    label-placement="stacked"
+                    [(ngModel)]="auxTieneSepul"
+                  >
+                    <ion-select-option
+                      value="true"
+                      >Si</ion-select-option
+                    >
+                    <ion-select-option
+                      value="false"
+                      >No</ion-select-option
+                    >
+                  </ion-select>
+                </ion-item>
+                <ion-item>
+                  <ion-input
+                    label="¿Dónde?"
+                    labelPlacement="stacked"
+                    placeholder="¿Dónde?"
+                    
+                    [(ngModel)]="datosProspecto.Donde__c"
+                  ></ion-input>
+                </ion-item>
+              </ion-list>
+            </ion-col>
+          </ion-row>
+        </ion-accordion>
+      </ion-accordion-group>
+      
+
+      
+
+      
+
+      
+      <ion-row>
+        <ion-col>
+          <ion-button expand="full" class="boton-relleno" (click)="guardar()"
+            >Guardar</ion-button
+          >
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <ion-button expand="full" class="boton-bordeado" (click)="crearCita()"
+            >Nueva cita</ion-button
+          >
+        </ion-col>
+      </ion-row>
+    </div>
+    <div [hidden]="segmentoActivo">
+      <ion-item-divider class="titulo-divider">
+        <ion-text class="titulo-seccion">
+          <h3>Citas</h3>
+        </ion-text>
+      </ion-item-divider>
+      <ion-row>
+        <ion-col>
+          Aca va el listado de existir
+          <!--<ngx-datatable
+            [rows]="rows"
+            [columns]="columns"
+            class="material"
+            [loadingIndicator]="loadingIndicator"
+            [summaryRow]="false"
+            [summaryPosition]="'bottom'"
+            [footerHeight]="80"
+            [limit]="10"
+            rowHeight="auto"
+            [reorderable]="reorderable"
+            [selected]="selected"
+            [selectionType]="SelectionType.single"
+            (activate)="onActivate($event)"
+            (select)="onSelect($event)"
+            [scrollbarH]="true"
+            [width]="300"
+          >
+          </ngx-datatable>-->
+        </ion-col>
+      </ion-row>
+    </div>
+  </div>
+</ion-content>

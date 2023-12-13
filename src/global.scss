@@ -16,7 +16,9 @@
 @import "@ionic/angular/css/normalize.css";
 @import "@ionic/angular/css/structure.css";
 @import "@ionic/angular/css/typography.css";
-@import '@ionic/angular/css/display.css';
+@import "@ionic/angular/css/display.css";
+@import 'swiper/css';
+
 
 /* Optional CSS utils that can be commented out */
 @import "@ionic/angular/css/padding.css";
@@ -24,3 +26,173 @@
 @import "@ionic/angular/css/text-alignment.css";
 @import "@ionic/angular/css/text-transformation.css";
 @import "@ionic/angular/css/flex-utils.css";
+$color-header: #007356;
+$color-naranja: #e8a61b;
+$color-alerta: #ed8948;
+$color-texto-verde: #004533;
+$color-titulos: #00b285;
+$color-menu:#004533;
+
+
+
+
+
+ion-back-button {
+  color: $color-naranja !important;
+}
+
+.color-naranja {
+  color: $color-naranja !important;
+}
+
+.titulo-seccion {
+  color: $color-titulos;
+  border-bottom: 1px;
+}
+.titulo-divider {
+  background: transparent;
+  border-bottom-style: solid;
+  border-bottom-color: $color-titulos;
+}
+
+.boton-relleno {
+  background-color: $color-header;
+  --background: $color-header;
+  --background-hover: $color-header;
+  --background-activated: $color-header;
+  --background-focused: $color-header;
+
+  --color: white;
+  --border-radius: 10;
+  border-radius: 50px;
+  /*width: 100%;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 15px 15px 15px 15px;*/
+}
+
+.boton-bordeado {
+  background-color: white;
+  --background: white;
+  --background-hover: white;
+  --background-activated: white;
+  --background-focused: white;
+
+  --color: $color-titulos;
+color: $color-titulos;
+  --border-radius: 50px;
+  border-radius: 5px;
+  border-style: solid;
+  border-color: $color-titulos;
+}
+
+init-position-scroll{
+  position: relative !important;
+}
+.weekview-normal-event-container{
+  position: unset !important;
+}
+
+.input-search{
+  border-bottom-style: solid;
+  border-bottom-color: #007356;
+  border-bottom-width: 2px;
+}
+
+.ngx-datatable.bootstrap {
+  box-shadow: none;
+  font-size: 13px;
+  .datatable-header {
+    height: unset !important;
+    .datatable-header-cell {
+      vertical-align: bottom;
+      padding: 0.75rem;
+      border-bottom: 1px solid #d1d4d7;
+      .datatable-header-cell-label {
+        line-height: 24px;
+      }
+    }
+  }
+  .datatable-body {
+    .datatable-body-row {
+      vertical-align: top;
+      border-top: 1px solid #d1d4d7;
+      &.datatable-row-even {
+        background-color: rgba(0, 0, 0, 0.05);
+      }
+      &.active {
+        background-color: #1483ff;
+        color: #fff;
+      }
+      .datatable-body-cell {
+        padding: 0.75rem;
+        text-align: left;
+        vertical-align: top;
+      }
+    }
+    .empty-row {
+      $alert-padding-y: 0.75rem !default;
+      $alert-padding-x: 1.25rem !default;
+      position: relative;
+      padding: $alert-padding-y $alert-padding-x;
+      margin-bottom: 0;
+    }
+  }
+  .datatable-footer {
+    background: #424242;
+    color: #ededed;
+    margin-top: -1px;
+    .page-count {
+      line-height: 50px;
+      height: 50px;
+      padding: 0 1.2rem;
+    }
+    .datatable-pager {
+      margin: 0 10px;
+      vertical-align: top;
+      ul {
+        li {
+          margin: 10px 0px;
+          &:not(.disabled) {
+            &.active,
+            &:hover {
+              a {
+                background-color: #545454;
+                font-weight: bold;
+              }
+            }
+          }
+        }
+      }
+      a {
+        height: 22px;
+        min-width: 24px;
+        line-height: 22px;
+        padding: 0;
+        border-radius: 3px;
+        margin: 0 3px;
+        text-align: center;
+        vertical-align: top;
+        text-decoration: none;
+        vertical-align: bottom;
+        color: #ededed;
+      }
+      .datatable-icon-left,
+      .datatable-icon-skip,
+      .datatable-icon-right,
+      .datatable-icon-prev {
+        font-size: 18px;
+        line-height: 27px;
+        padding: 0 3px;
+      }
+    }
+  }
+  // Summary row styles
+  .datatable-summary-row {
+    .datatable-body-row {
+      .datatable-body-cell {
+        font-weight: bold;
+      }
+    }
+  }
+}

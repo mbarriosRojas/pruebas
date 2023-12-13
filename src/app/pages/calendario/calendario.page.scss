@@ -1,0 +1,36 @@
+table {
+    table-layout: fixed;
+    width: 100%;
+    border-collapse: collapse;
+    border: 3px solid #007356;
+  }
+  
+  thead th:nth-child(1) {
+    width: 30%;
+  }
+  
+  thead th:nth-child(2) {
+    width: 20%;
+  }
+  
+  thead th:nth-child(3) {
+    width: 15%;
+  }
+  
+  thead th:nth-child(4) {
+    width: 35%;
+  }
+  
+  th,
+  td {
+    padding: 20px;
+  }
+
+  tbody tr:nth-child(odd) {
+    background-color: #f2f2f2;
+    color: black;
+  }
+  
+  tbody tr:nth-child(even) {
+    background-color: unset;
+  }

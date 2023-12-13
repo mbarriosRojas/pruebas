@@ -1,3 +1,68 @@
 <ion-app>
-  <ion-router-outlet></ion-router-outlet>
+  <div *ngIf="!logueado">
+    <ion-router-outlet></ion-router-outlet>
+  </div>
+
+  <div *ngIf="logueado">
+    <ion-menu contentId="main-content">
+      <ion-header >
+        <ion-toolbar class="contenido-menu">
+          <ion-title>Menu</ion-title>
+          <ion-buttons slot="end">
+            <ion-menu-toggle>
+              <ion-icon name="close-outline" size="large"></ion-icon>
+            </ion-menu-toggle>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding contenido-menu">
+        <ion-list *ngFor="let pages of navigate">  
+          <ion-menu-toggle auto-hide="true">  
+            <ion-item [routerLink]="pages.url" routerDirection="forward">
+              <ion-icon [name]="pages.icon" slot="start"></ion-icon>
+              <ion-label>{{pages.title}}   </ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+        </ion-list>
+        
+        <div class="footer-menu">
+          <ion-item (click)="logout()">
+            <ion-icon name="exit-outline"></ion-icon>
+            <ion-label>Salir</ion-label>
+          </ion-item>
+        </div>
+      </ion-content>
+    </ion-menu>
+    <div class="ion-page" id="main-content">
+      <ion-header>
+        <ion-toolbar>
+          <ion-buttons slot="start">
+            <ion-menu-button class="texto-blanco"></ion-menu-button>
+          </ion-buttons>
+          <ion-title>
+            <div class="card-container">
+              <img
+                style="width:150px;"
+                src="/assets/logos/logoParqueBlanco.png"
+                alt="Parque del reuerdo"
+                loading="lazy"
+              />
+            </div>
+          </ion-title>
+          <ion-buttons slot="end">
+            <ion-avatar>
+              <img
+                alt="{{ nombreUsuario }}"
+                src="{{ avatarUsuario }}"
+                *ngIf="avatarUsuario"
+              />
+            </ion-avatar>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <ion-router-outlet></ion-router-outlet>
+      </ion-content>
+    </div>
+  </div>
 </ion-app>

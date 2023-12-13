@@ -25,10 +25,33 @@ export class LoginPage implements OnInit {
     public toastController: ToastController
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    let logueado:any = localStorage.getItem('tokenSF');
+    console.log('Actual:',logueado);
+    console.log(this.authService.logueado);
+    if (logueado != null && logueado != undefined){
+      this.authService.refreshTokenSalesForce().toPromise()
+      .then((resp: any) => {
+        console.log(resp);
+        if(resp.access_token != null && resp.access_token != undefined){
+          localStorage.setItem('tokenSF', resp.access_token);
+          console.log('Nuevo:',localStorage.getItem('tokenSF'));
+          this.authService.updateLogin(true);
+          this.router.navigate(['/inicio']);
+        }
+        //
+      })
+      .catch(() => {
+        console.log('error en token refrest se debe conectar de nuevo');
+        this.authService.logueado=false;
+        this.authService.updateLogin(this.authService.logueado);
+      });
+    }
+  }
   async login() {
+    window.open('https://test.salesforce.com/services/oauth2/authorize?response_type=token&client_id='+this.authService.clientIdSalesforce+'&redirect_uri=http://localhost:8100/respuestaLogin&state=mystate&display=touch','_self');
     // eslint-disable-next-line eqeqeq
-    if (this.email != '' && this.clave != '') {
+    /*if (this.email != '' && this.clave != '') {
       this.presentLoading();
       this.user =
       'grant_type=password'+
@@ -54,7 +77,7 @@ export class LoginPage implements OnInit {
         'Llena los campos para poder continuar. Por favor intente de nuevo',
         'danger'
       );
-    }
+    }*/
   }
   /* Alert de ionic */
   async presentAlert(title: any, descrip: any) {

@@ -1,0 +1,53 @@
+<ion-content [fullscreen]="true">
+  
+  <div class="ion-padding">
+    <ion-item-divider class="titulo-divider">
+      <ion-grid>
+      <ion-row>
+        <ion-col size="8">
+          <ion-text class="titulo-seccion">
+            <h3>Mis prospectos</h3>
+          </ion-text>
+        </ion-col>
+        <ion-col size="4">
+          <ion-button expand="full" class="boton-relleno" style="margin-top: 20px;" (click)="newLead()">Nuevo</ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    </ion-item-divider>
+    <ion-row *ngIf="rows">
+      <ion-col>
+        
+            <!--<ion-input label="Filtrar" class="input-search" labelPlacement="stacked" placeholder="Filtar" (keyup)="updateFilter($event)"></ion-input>-->
+            <ion-searchbar (keyup)="updateFilter($event)" animated="true" placeholder="Buscar por nombre"></ion-searchbar>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="rows">
+      <ion-col>
+
+        
+        <ngx-datatable
+        #table
+          [rows]="rows"
+          [columns]="columns"
+          class="bootstrap"
+          [loadingIndicator]="loadingIndicator"
+          [summaryRow]="false"
+          [footerHeight]="80"
+          [limit]="5"
+          rowHeight="auto"
+          [reorderable]="reorderable"
+          [selected]="selected"
+          [selectionType]="SelectionType.single"
+          (activate)="onActivate($event)"
+          (select)="onSelect($event)"
+          [scrollbarH]="true"
+          [width]="300"
+          [messages]="mensajes"
+        >
+        
+        </ngx-datatable>
+      </ion-col>
+    </ion-row>
+  </div>
+</ion-content>
