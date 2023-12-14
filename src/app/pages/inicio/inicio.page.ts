@@ -52,7 +52,7 @@ export class InicioPage implements OnInit {
   columns = [{ name: 'Nombre',width:300, prop:'name' }, { name: 'Estados',prop:'telefono',width:150 }];
   reorderable = true;
   loadingIndicator = true;
-
+  usuarioConectado:any='';
   constructor(public alertController: AlertController,
     private authService: AuthService,
     public loadingController: LoadingController,
@@ -67,9 +67,10 @@ export class InicioPage implements OnInit {
     this.tokenSF=localStorage.getItem('tokenSF');
     this.tokenRF=localStorage.getItem('tokenRefreshSF');
     this.instancia= localStorage.getItem('instanciaUrlSF');
+    this.usuarioConectado = localStorage.getItem('usuarioConectadoSF');
     //this.authService.updateLogin(true);
     console.log(this.instancia,this.tokenSF);
-    let query = '/services/data/v56.0/query/?q=SELECT+Id,+Name,+Phone,+Email,+Status+FROM+Lead+WHERE+IsConverted=FALSE';
+    let query = "/services/data/v56.0/query/?q=SELECT+Id,+Name,+Phone,+Email,+Status+FROM+Lead+WHERE+IsConverted=FALSE+AND+OwnerId='"+this.usuarioConectado+"'";
     this.authService.executeQuery(this.instancia+query,this.tokenSF).toPromise()
     .then((resp: any) => {
       console.log(resp);

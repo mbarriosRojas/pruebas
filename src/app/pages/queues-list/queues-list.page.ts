@@ -28,6 +28,11 @@ export enum SelectionType {
   styleUrls: ['./queues-list.page.scss'],
 })
 export class QueuesListPage implements OnInit {
+  loading: any;
+  @ViewChild('popover') popover: any = null;
+
+  isOpen = false;
+
   @ViewChild(DatatableComponent) table: DatatableComponent | any = null;
 
   selected = [];
@@ -151,8 +156,16 @@ export class QueuesListPage implements OnInit {
   }
 
   onSelect(selected: any) {
+    this.presentPopover(selected);
     console.log('Select Event', selected, this.selected);
-    this.navCtrl.navigateForward('/detail-lead/' + selected.selected[0].id);
+    
+  }
+
+  onAceptar(){
+    console.log('Entra');
+    console.log(this.selected);
+    this.isOpen =false;
+    this.actualizarPropietario();
   }
 
   onActivate(event: any) {
@@ -191,5 +204,52 @@ export class QueuesListPage implements OnInit {
     });
 
     await toast.present();
+  }
+
+  presentPopover(e: Event) {
+    this.popover.event = e;
+    this.isOpen = true;
+  }
+
+  actualizarPropietario() {
+    this.showLoading();
+    
+    let query =
+      "/services/data/v56.0/sobjects/Lead/"+this.selected[0]['id'];
+    console.log(query);
+    console.log(this.selected[0]);
+    let dataEnviar:any = {
+      OwnerId: this.usuarioConectado
+    }
+    console.log(dataEnviar);
+    this.authService
+      .executeQueryPatch(this.instancia + query, this.tokenSF, dataEnviar)
+      .toPromise()
+      .then((resp: any) => {
+        console.log(resp);
+        
+        this.loading.dismiss();
+        this.presentToast('top','Se modifico con exito',5000,'success')
+        setTimeout(() => {
+          this.navCtrl.navigateRoot('/');
+        }, 5000);
+      },
+        msg => { // Error
+        console.log(msg)
+        this.loading.dismiss();
+        this.presentToast('top','Error:'+msg.error[0].message,5000,'danger')
+      })
+      .catch((e) => {
+        this.loading.dismiss();
+        console.log('error');
+      });
+  }
+
+  async showLoading() {
+    this.loading = await this.loadingController.create({
+      message: 'Cargando..',
+    });
+
+    this.loading.present();
   }
 }
