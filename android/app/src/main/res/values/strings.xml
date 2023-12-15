@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">connecta</string>
-    <string name="title_activity_main">connecta</string>
+    <string name="app_name">Parque del recuerdo</string>
+    <string name="title_activity_main">Parque del recuerdo</string>
     <string name="package_name">io.ionic.starter</string>
     <string name="custom_url_scheme">io.ionic.starter</string>
 </resources>
