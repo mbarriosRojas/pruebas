@@ -6,7 +6,7 @@ import {
 } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
-import {InAppBrowser} from '@awesome-cordova-plugins/in-app-browser/ngx';
+import { InAppBrowser,InAppBrowserEvent } from '@awesome-cordova-plugins/in-app-browser/ngx';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +18,7 @@ export class LoginPage implements OnInit {
   clave: any = '';
   loading: any;
   user: any = {};
-
+  cordova: any;
   constructor(
     public alertController: AlertController,
     private authService: AuthService,
@@ -26,84 +26,57 @@ export class LoginPage implements OnInit {
     public router: Router,
     public toastController: ToastController,
     private inAppBrowser: InAppBrowser,
-    public route: Router  ) {}
-
-  ngOnInit() {
-    let logueado:any = localStorage.getItem('tokenSF');
-    console.log('Actual:',logueado);
+    public route: Router
+  ) {}
+  ionViewDidEnter() {
+    let logueado: any = localStorage.getItem('tokenSF');
+    console.log('Actual:', logueado);
     console.log(this.authService.logueado);
-    if (logueado != null && logueado != undefined){
-      this.authService.refreshTokenSalesForce().toPromise()
-      .then((resp: any) => {
-        console.log(resp);
-        if(resp.access_token != null && resp.access_token != undefined){
-          localStorage.setItem('tokenSF', resp.access_token);
-          console.log('Nuevo:',localStorage.getItem('tokenSF'));
-          this.authService.updateLogin(true);
-          this.router.navigate(['/inicio']);
-        }
-        //
-      })
-      .catch(() => {
-        console.log('error en token refrest se debe conectar de nuevo');
-        this.authService.logueado=false;
-        this.authService.updateLogin(this.authService.logueado);
-      });
+    if (logueado != null && logueado != undefined) {
+      this.authService
+        .refreshTokenSalesForce()
+        .toPromise()
+        .then((resp: any) => {
+          console.log(resp);
+          if (resp.access_token != null && resp.access_token != undefined) {
+            localStorage.setItem('tokenSF', resp.access_token);
+            console.log('Nuevo:', localStorage.getItem('tokenSF'));
+            this.authService.updateLogin(true);
+            this.router.navigate(['/inicio']);
+          }
+          //
+        })
+        .catch(() => {
+          console.log('error en token refrest se debe conectar de nuevo');
+          this.authService.logueado = false;
+          this.authService.updateLogin(this.authService.logueado);
+        });
     }
   }
-  async login2(){
-    
-    let x = this;
-              //Aqui abrir el navegador
-              let browser = this.inAppBrowser.create(
-                'https://test.salesforce.com/services/oauth2/authorize?response_type=token&client_id='+this.authService.clientIdSalesforce+'&redirect_uri=io.ionic.starter://localhost/respuestaLogin',
-                "_system"
-              );
+  ngOnInit() {}
 
-              browser.on("exit").subscribe((event: any) => {
-                alert('hola');
-                if(this.route.url){
-                  x.router.navigate([
-                    "/respuestaLogin",
-                  ])
-                }
-                /*x.router.navigate([
-                  "/pago-exitoso",
-                  { enviar: JSON.stringify(x.enviar) },
-                ]);*/
-              });
-              browser.on("loadstop").subscribe((event: any) => {
-                alert('hola2');
-                if(this.route.url){
-                  x.router.navigate([
-                    "/respuestaLogin",
-                  ])
-                }
-              });
-              browser.on("loaderror").subscribe((event: any) => {
-                alert('hola3');
-                /*x.router.navigate([
-                  "/pago-exitoso",
-                  { enviar: JSON.stringify(x.enviar) },
-                ]);*/
-              });
-              browser.on("loadstart").subscribe((event: any) => {
-                alert('hola5');
-                /*x.router.navigate([
-                  "/pago-exitoso",
-                  { enviar: JSON.stringify(x.enviar) },
-                ]);*/
-              });
-              browser.on("beforeload").subscribe((event: any) => {
-                alert('hola6');
-                /*x.router.navigate([
-                  "/pago-exitoso",
-                  { enviar: JSON.stringify(x.enviar) },
-                ]);*/
-              });
+  async login2() {
+ 
+    let x = this;
+    let browser = this.inAppBrowser.create(
+      'https://test.salesforce.com/services/oauth2/authorize?response_type=token&client_id=' +
+        this.authService.clientIdSalesforce +
+        '&redirect_uri=http://localhost:8100/respuestaLogin',
+      '_system'
+    );
+    browser.close();
+    browser.show();
+    if (this.route.url) {
+      x.router.navigate(['/respuestaLogin']);
+    }
   }
   async login() {
-    window.open('https://test.salesforce.com/services/oauth2/authorize?response_type=token&client_id='+this.authService.clientIdSalesforce+'&redirect_uri=io.ionic.starter://localhost/respuestaLogin','_system');
+    window.open(
+      'https://test.salesforce.com/services/oauth2/authorize?response_type=token&client_id=' +
+        this.authService.clientIdSalesforce +
+        '&redirect_uri=io.ionic.starter://localhost/respuestaLogin',
+      '_system'
+    );
     // eslint-disable-next-line eqeqeq
     /*if (this.email != '' && this.clave != '') {
       this.presentLoading();
