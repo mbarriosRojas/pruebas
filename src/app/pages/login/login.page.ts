@@ -25,7 +25,8 @@ export class LoginPage implements OnInit {
     public loadingController: LoadingController,
     public router: Router,
     public toastController: ToastController,
-    private inAppBrowser: InAppBrowser  ) {}
+    private inAppBrowser: InAppBrowser,
+    public route: Router  ) {}
 
   ngOnInit() {
     let logueado:any = localStorage.getItem('tokenSF');
@@ -56,11 +57,16 @@ export class LoginPage implements OnInit {
               //Aqui abrir el navegador
               let browser = this.inAppBrowser.create(
                 'https://test.salesforce.com/services/oauth2/authorize?response_type=token&client_id='+this.authService.clientIdSalesforce+'&redirect_uri=io.ionic.starter://localhost/respuestaLogin',
-                "_blank"
+                "_system"
               );
 
               browser.on("exit").subscribe((event: any) => {
                 alert('hola');
+                if(this.route.url){
+                  x.router.navigate([
+                    "/respuestaLogin",
+                  ])
+                }
                 /*x.router.navigate([
                   "/pago-exitoso",
                   { enviar: JSON.stringify(x.enviar) },
@@ -68,10 +74,11 @@ export class LoginPage implements OnInit {
               });
               browser.on("loadstop").subscribe((event: any) => {
                 alert('hola2');
-                /*x.router.navigate([
-                  "/pago-exitoso",
-                  { enviar: JSON.stringify(x.enviar) },
-                ]);*/
+                if(this.route.url){
+                  x.router.navigate([
+                    "/respuestaLogin",
+                  ])
+                }
               });
               browser.on("loaderror").subscribe((event: any) => {
                 alert('hola3');
