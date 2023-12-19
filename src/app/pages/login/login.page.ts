@@ -6,6 +6,8 @@ import {
 } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import {InAppBrowser} from '@awesome-cordova-plugins/in-app-browser/ngx';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -22,8 +24,8 @@ export class LoginPage implements OnInit {
     private authService: AuthService,
     public loadingController: LoadingController,
     public router: Router,
-    public toastController: ToastController
-  ) {}
+    public toastController: ToastController,
+    private inAppBrowser: InAppBrowser  ) {}
 
   ngOnInit() {
     let logueado:any = localStorage.getItem('tokenSF');
@@ -47,6 +49,51 @@ export class LoginPage implements OnInit {
         this.authService.updateLogin(this.authService.logueado);
       });
     }
+  }
+  async login2(){
+    
+    let x = this;
+              //Aqui abrir el navegador
+              let browser = this.inAppBrowser.create(
+                'https://test.salesforce.com/services/oauth2/authorize?response_type=token&client_id='+this.authService.clientIdSalesforce+'&redirect_uri=io.ionic.starter://localhost/respuestaLogin',
+                "_blank"
+              );
+
+              browser.on("exit").subscribe((event: any) => {
+                alert('hola');
+                /*x.router.navigate([
+                  "/pago-exitoso",
+                  { enviar: JSON.stringify(x.enviar) },
+                ]);*/
+              });
+              browser.on("loadstop").subscribe((event: any) => {
+                alert('hola2');
+                /*x.router.navigate([
+                  "/pago-exitoso",
+                  { enviar: JSON.stringify(x.enviar) },
+                ]);*/
+              });
+              browser.on("loaderror").subscribe((event: any) => {
+                alert('hola3');
+                /*x.router.navigate([
+                  "/pago-exitoso",
+                  { enviar: JSON.stringify(x.enviar) },
+                ]);*/
+              });
+              browser.on("loadstart").subscribe((event: any) => {
+                alert('hola5');
+                /*x.router.navigate([
+                  "/pago-exitoso",
+                  { enviar: JSON.stringify(x.enviar) },
+                ]);*/
+              });
+              browser.on("beforeload").subscribe((event: any) => {
+                alert('hola6');
+                /*x.router.navigate([
+                  "/pago-exitoso",
+                  { enviar: JSON.stringify(x.enviar) },
+                ]);*/
+              });
   }
   async login() {
     window.open('https://test.salesforce.com/services/oauth2/authorize?response_type=token&client_id='+this.authService.clientIdSalesforce+'&redirect_uri=io.ionic.starter://localhost/respuestaLogin','_system');
@@ -79,7 +126,7 @@ export class LoginPage implements OnInit {
       );
     }*/
   }
-  /* Alert de ionic */
+  /* Alert de ionic
   async presentAlert(title: any, descrip: any) {
     const alert = await this.alertController.create({
       header: title,
@@ -110,5 +157,5 @@ export class LoginPage implements OnInit {
     });
     await loadingIndicator.present();
     return loadingIndicator;
-  }
+  } */
 }
