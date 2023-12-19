@@ -49,7 +49,7 @@ export class LoginPage implements OnInit {
     }
   }
   async login() {
-    window.open('https://test.salesforce.com/services/oauth2/authorize?response_type=token&client_id='+this.authService.clientIdSalesforce+'&redirect_uri=capacitor://localhost/respuestaLogin&state=mystate&display=touch','_self');
+    window.open('https://test.salesforce.com/services/oauth2/authorize?response_type=token&client_id='+this.authService.clientIdSalesforce+'&redirect_uri=io.ionic.starter://localhost/respuestaLogin','_system');
     // eslint-disable-next-line eqeqeq
     /*if (this.email != '' && this.clave != '') {
       this.presentLoading();
